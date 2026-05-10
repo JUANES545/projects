@@ -5,30 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Juan Mejía — Studio</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:           #080b10;
-      --card-bg:      rgba(255, 255, 255, 0.04);
-      --card-border:  rgba(255, 255, 255, 0.08);
-      --text:         #e8eaf0;
-      --muted:        #6b7585;
-      --accent:       #4f9eff;
+      --bg:           #05070f;
+      --surface:      rgba(255,255,255,0.028);
+      --surface-hov:  rgba(79,172,254,0.055);
+      --border:       rgba(255,255,255,0.07);
+      --border-hov:   rgba(79,172,254,0.32);
+      --text:         #d8e0f0;
+      --muted:        #526070;
+      --accent:       #4facfe;
+      --accent2:      #00f2fe;
+      --glow:         rgba(79,172,254,0.18);
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-family: 'DM Mono', 'Courier New', monospace;
       min-height: 100vh;
       overflow-x: hidden;
+    }
+
+    /* Atmospheric depth gradient */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60vh;
+      background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(79,172,254,0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     canvas {
       position: fixed;
       inset: 0;
-      width: 100%;
-      height: 100%;
       z-index: 0;
       pointer-events: none;
     }
@@ -37,97 +52,199 @@
     .content {
       position: relative;
       z-index: 1;
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 28px;
     }
 
     /* ── Hero ── */
     header {
-      padding: 100px 0 80px;
-      text-align: center;
+      padding: 128px 0 104px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: riseIn 0.7s cubic-bezier(0.22,1,0.36,1) forwards 0.15s;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.5;
     }
 
     header h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 300;
-      letter-spacing: -0.02em;
-      color: #fff;
-      margin-bottom: 14px;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3.2rem, 9vw, 6rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 0.93;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: riseIn 0.75s cubic-bezier(0.22,1,0.36,1) forwards 0.3s;
     }
 
-    header h1 span {
-      color: var(--accent);
-      font-weight: 500;
+    .name-first {
+      display: block;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .name-last {
+      display: block;
+      background: linear-gradient(120deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .tagline {
-      font-size: 0.82rem;
-      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 18px;
+      margin-bottom: 22px;
+      opacity: 0;
+      animation: riseIn 0.7s cubic-bezier(0.22,1,0.36,1) forwards 0.45s;
     }
 
-    header p {
-      font-size: 1rem;
+    .tagline .sep {
+      margin: 0 12px;
+      opacity: 0.3;
+    }
+
+    header > p {
+      font-size: 0.88rem;
       color: var(--muted);
       max-width: 460px;
-      margin: 0 auto 32px;
-      line-height: 1.65;
+      line-height: 1.8;
+      margin-bottom: 44px;
+      opacity: 0;
+      animation: riseIn 0.7s cubic-bezier(0.22,1,0.36,1) forwards 0.58s;
     }
 
     .header-links {
       display: flex;
       gap: 24px;
-      justify-content: center;
+      opacity: 0;
+      animation: riseIn 0.7s cubic-bezier(0.22,1,0.36,1) forwards 0.7s;
     }
 
     .header-links a {
       color: var(--muted);
       text-decoration: none;
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-links a .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      transition: box-shadow 0.2s, background 0.2s;
+      flex-shrink: 0;
     }
 
     .header-links a:hover { color: var(--accent); }
+    .header-links a:hover .dot { box-shadow: 0 0 10px var(--accent); }
 
-    /* ── Section label ── */
-    .section-label {
-      font-size: 0.7rem;
-      letter-spacing: 0.14em;
+    /* ── Section headers ── */
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .sec-num {
+      font-size: 0.6rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .sec-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 20px;
+      flex-shrink: 0;
+    }
+
+    .sec-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(255,255,255,0.07), transparent);
     }
 
     /* ── Cards grid ── */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 14px;
-      margin-bottom: 72px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+      margin-bottom: 80px;
     }
 
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
+    .card, .app-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
       padding: 28px 26px;
-      text-decoration: none;
-      color: inherit;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      transition: border-color 0.25s, background 0.25s, transform 0.25s;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s;
     }
 
-    .card:hover {
-      border-color: rgba(79, 158, 255, 0.28);
-      background: rgba(255, 255, 255, 0.065);
-      transform: translateY(-3px);
+    /* Mouse-tracking spotlight */
+    .card::after, .app-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle 200px at var(--mx, 50%) var(--my, 50%),
+        rgba(79,172,254,0.09) 0%,
+        transparent 70%
+      );
+      opacity: 0;
+      transition: opacity 0.35s;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    .card:hover::after, .app-card:hover::after { opacity: 1; }
+
+    .card {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card:hover, .app-card:hover {
+      border-color: var(--border-hov);
+      background: var(--surface-hov);
+      transform: translateY(-5px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.35), 0 0 0 1px rgba(79,172,254,0.08);
     }
 
     .card-top {
@@ -137,32 +254,33 @@
     }
 
     .card-icon {
-      font-size: 22px;
+      font-size: 20px;
       line-height: 1;
     }
 
     .card-arrow {
-      font-size: 16px;
+      font-size: 13px;
       color: var(--muted);
-      transition: transform 0.2s, color 0.2s;
+      transition: transform 0.25s, color 0.25s;
     }
 
     .card:hover .card-arrow {
-      transform: translate(3px, -3px);
+      transform: translate(4px, -4px);
       color: var(--accent);
     }
 
-    .card h2 {
-      font-size: 1rem;
-      font-weight: 500;
+    .card h2, .app-card h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.02rem;
+      font-weight: 700;
       color: #fff;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
 
-    .card p {
-      font-size: 0.86rem;
+    .card p, .app-card p {
+      font-size: 0.8rem;
       color: var(--muted);
-      line-height: 1.6;
+      line-height: 1.75;
       flex: 1;
     }
 
@@ -173,47 +291,16 @@
     }
 
     .tag {
-      font-size: 0.7rem;
-      letter-spacing: 0.03em;
-      padding: 3px 9px;
-      border-radius: 5px;
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--muted);
+      font-size: 0.6rem;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(79,172,254,0.07);
+      color: rgba(79,172,254,0.55);
+      border: 1px solid rgba(79,172,254,0.13);
     }
 
-    /* ── App cards ── */
-    .app-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 28px 26px;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      transition: border-color 0.25s, background 0.25s, transform 0.25s;
-    }
-
-    .app-card:hover {
-      border-color: rgba(79, 158, 255, 0.28);
-      background: rgba(255, 255, 255, 0.065);
-      transform: translateY(-3px);
-    }
-
-    .app-card h2 {
-      font-size: 1rem;
-      font-weight: 500;
-      color: #fff;
-      letter-spacing: -0.01em;
-    }
-
-    .app-card p {
-      font-size: 0.86rem;
-      color: var(--muted);
-      line-height: 1.6;
-      flex: 1;
-    }
-
+    /* ── App footer ── */
     .app-footer {
       display: flex;
       align-items: center;
@@ -222,51 +309,65 @@
       margin-top: 4px;
     }
 
+    .platform-badge {
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 3px 9px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
     .download-btn {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      background: var(--accent);
-      color: #fff;
+      background: linear-gradient(120deg, var(--accent), var(--accent2));
+      color: #04060e;
       text-decoration: none;
-      font-size: 0.78rem;
+      font-size: 0.68rem;
       font-weight: 500;
-      letter-spacing: 0.04em;
-      padding: 8px 16px;
-      border-radius: 8px;
-      transition: opacity 0.2s, transform 0.2s;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 9px 18px;
+      border-radius: 9px;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
       white-space: nowrap;
     }
 
     .download-btn:hover {
       opacity: 0.88;
       transform: translateY(-1px);
-    }
-
-    .platform-badge {
-      font-size: 0.68rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 3px 9px;
-      border-radius: 5px;
-      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 28px rgba(79,172,254,0.28);
     }
 
     /* ── Footer ── */
     footer {
       text-align: center;
-      padding: 24px 0 44px;
+      padding: 28px 0 52px;
       color: var(--muted);
-      font-size: 0.78rem;
-      border-top: 1px solid var(--card-border);
-      letter-spacing: 0.03em;
+      font-size: 0.65rem;
+      border-top: 1px solid var(--border);
+      letter-spacing: 0.14em;
+      opacity: 0.5;
+    }
+
+    /* ── Keyframes ── */
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
 
     /* ── Responsive ── */
-    @media (max-width: 480px) {
-      header { padding: 72px 0 52px; }
-      .grid { grid-template-columns: 1fr; }
+    @media (max-width: 520px) {
+      header { padding: 80px 0 64px; }
+      .grid  { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -277,16 +378,30 @@
 <div class="content">
 
   <header>
-    <h1>Juan <span>Mejía</span></h1>
-    <p class="tagline">Native &middot; Backend &middot; Web</p>
+    <p class="hero-eyebrow">Studio</p>
+    <h1>
+      <span class="name-first">Juan</span>
+      <span class="name-last">Mej&iacute;a</span>
+    </h1>
+    <p class="tagline">
+      Native<span class="sep">/</span>Backend<span class="sep">/</span>Web
+    </p>
     <p>Android &amp; software developer. Building tools, apps, and experiences that blur the line between software and hardware.</p>
     <div class="header-links">
-      <a href="https://github.com/JUANES545" target="_blank" rel="noopener">GitHub ↗</a>
-      <a href="https://juanes545.github.io/WebJuan/" target="_blank" rel="noopener">3D Portfolio ↗</a>
+      <a href="https://github.com/JUANES545" target="_blank" rel="noopener">
+        <span class="dot"></span>GitHub ↗
+      </a>
+      <a href="https://juanes545.github.io/WebJuan/" target="_blank" rel="noopener">
+        <span class="dot"></span>3D Portfolio ↗
+      </a>
     </div>
   </header>
 
-  <p class="section-label">Projects</p>
+  <div class="section-head" style="animation-delay:0.85s">
+    <span class="sec-num">01</span>
+    <span class="sec-label">Projects</span>
+    <span class="sec-rule"></span>
+  </div>
 
   <div class="grid">
 
@@ -336,7 +451,11 @@
 
   </div>
 
-  <p class="section-label">Apps</p>
+  <div class="section-head" style="animation-delay:1.0s">
+    <span class="sec-num">02</span>
+    <span class="sec-label">Apps</span>
+    <span class="sec-rule"></span>
+  </div>
 
   <div class="grid">
 
@@ -378,58 +497,67 @@
 
   </div>
 
-  <footer>
-    Juan Mejía
-  </footer>
+  <footer>Juan Mej&iacute;a</footer>
 
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-  const canvas  = document.getElementById('bg');
+  // ── Mouse-tracking spotlight on cards ─────────────────────────────────
+  document.querySelectorAll('.card, .app-card').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', ((e.clientX - r.left) / r.width  * 100) + '%');
+      el.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
+    });
+  });
+
+  // ── Three.js enhanced particle background ─────────────────────────────
+  const canvas   = document.getElementById('bg');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene  = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
-  camera.position.z = 50;
+  scene.fog    = new THREE.FogExp2(0x05070f, 0.011);
 
-  // ── Particles ──────────────────────────────────────────────────────────
-  const COUNT = 200;
+  const camera = new THREE.PerspectiveCamera(62, window.innerWidth / window.innerHeight, 0.1, 200);
+  camera.position.z = 55;
+
+  // Particles
+  const COUNT     = 320;
   const positions = new Float32Array(COUNT * 3);
   for (let i = 0; i < COUNT; i++) {
-    positions[i * 3]     = (Math.random() - 0.5) * 130;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 90;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 70;
+    positions[i * 3]     = (Math.random() - 0.5) * 140;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 80;
   }
 
   const pGeo = new THREE.BufferGeometry();
   pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
   const pMat = new THREE.PointsMaterial({
-    color: 0x4f9eff,
-    size: 0.3,
+    color: 0x4facfe,
+    size: 0.28,
     transparent: true,
-    opacity: 0.5,
+    opacity: 0.52,
     sizeAttenuation: true,
   });
 
   scene.add(new THREE.Points(pGeo, pMat));
 
-  // ── Connection lines (static mesh, built once) ─────────────────────────
-  const CONNECT_DIST = 20;
-  const lineVerts = [];
-
+  // Connection lines
+  const CONNECT_DIST = 19;
+  const lineVerts    = [];
   for (let i = 0; i < COUNT; i++) {
     for (let j = i + 1; j < COUNT; j++) {
-      const dx = positions[i * 3]     - positions[j * 3];
-      const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
-      const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
-      if (dx * dx + dy * dy + dz * dz < CONNECT_DIST * CONNECT_DIST) {
+      const dx = positions[i*3]   - positions[j*3];
+      const dy = positions[i*3+1] - positions[j*3+1];
+      const dz = positions[i*3+2] - positions[j*3+2];
+      if (dx*dx + dy*dy + dz*dz < CONNECT_DIST * CONNECT_DIST) {
         lineVerts.push(
-          positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2],
-          positions[j * 3], positions[j * 3 + 1], positions[j * 3 + 2],
+          positions[i*3], positions[i*3+1], positions[i*3+2],
+          positions[j*3], positions[j*3+1], positions[j*3+2],
         );
       }
     }
@@ -437,33 +565,31 @@
 
   const lGeo = new THREE.BufferGeometry();
   lGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(lineVerts), 3));
-  const lMat = new THREE.LineBasicMaterial({ color: 0x4f9eff, transparent: true, opacity: 0.07 });
+  const lMat = new THREE.LineBasicMaterial({ color: 0x4facfe, transparent: true, opacity: 0.055 });
   scene.add(new THREE.LineSegments(lGeo, lMat));
 
-  // ── Subtle mouse parallax ──────────────────────────────────────────────
+  // Mouse parallax
   let mx = 0, my = 0;
   document.addEventListener('mousemove', e => {
     mx = (e.clientX / window.innerWidth  - 0.5) * 2;
     my = (e.clientY / window.innerHeight - 0.5) * 2;
   });
 
-  // ── Resize ────────────────────────────────────────────────────────────
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  // ── Render loop ───────────────────────────────────────────────────────
   const clock = new THREE.Clock();
-
   (function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
-    scene.rotation.y = t * 0.016;
-    scene.rotation.x = t * 0.007;
-    camera.position.x += (mx * 3  - camera.position.x) * 0.04;
-    camera.position.y += (-my * 2 - camera.position.y) * 0.04;
+    scene.rotation.y = t * 0.015;
+    scene.rotation.x = t * 0.006;
+    pMat.opacity = 0.44 + Math.sin(t * 0.7) * 0.08;
+    camera.position.x += (mx * 3  - camera.position.x) * 0.035;
+    camera.position.y += (-my * 2 - camera.position.y) * 0.035;
     renderer.render(scene, camera);
   })();
 </script>
