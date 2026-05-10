@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Juan Esteban Mejía — Projects</title>
+  <title>Juan Mejía — Studio</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -42,9 +42,9 @@
       padding: 0 24px;
     }
 
-    /* ── Header ── */
+    /* ── Hero ── */
     header {
-      padding: 100px 0 72px;
+      padding: 100px 0 80px;
       text-align: center;
     }
 
@@ -59,6 +59,14 @@
     header h1 span {
       color: var(--accent);
       font-weight: 500;
+    }
+
+    .tagline {
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 18px;
     }
 
     header p {
@@ -96,11 +104,11 @@
     }
 
     /* ── Cards grid ── */
-    .projects {
+    .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
       gap: 14px;
-      margin-bottom: 100px;
+      margin-bottom: 72px;
     }
 
     .card {
@@ -173,6 +181,78 @@
       color: var(--muted);
     }
 
+    /* ── App cards ── */
+    .app-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 28px 26px;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: border-color 0.25s, background 0.25s, transform 0.25s;
+    }
+
+    .app-card:hover {
+      border-color: rgba(79, 158, 255, 0.28);
+      background: rgba(255, 255, 255, 0.065);
+      transform: translateY(-3px);
+    }
+
+    .app-card h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .app-card p {
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .app-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: opacity 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+
+    .download-btn:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    .platform-badge {
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 3px 9px;
+      border-radius: 5px;
+      border: 1px solid var(--card-border);
+    }
+
     /* ── Footer ── */
     footer {
       text-align: center;
@@ -186,7 +266,7 @@
     /* ── Responsive ── */
     @media (max-width: 480px) {
       header { padding: 72px 0 52px; }
-      .projects { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -198,16 +278,17 @@
 
   <header>
     <h1>Juan <span>Mejía</span></h1>
-    <p>Android &amp; games developer. Building tools that blur the line between software and hardware.</p>
+    <p class="tagline">Native &middot; Backend &middot; Web</p>
+    <p>Android &amp; software developer. Building tools, apps, and experiences that blur the line between software and hardware.</p>
     <div class="header-links">
       <a href="https://github.com/JUANES545" target="_blank" rel="noopener">GitHub ↗</a>
       <a href="https://juanes545.github.io/WebJuan/" target="_blank" rel="noopener">3D Portfolio ↗</a>
     </div>
   </header>
 
-  <p class="section-label">Selected projects</p>
+  <p class="section-label">Projects</p>
 
-  <div class="projects">
+  <div class="grid">
 
     <a class="card" href="https://github.com/JUANES545/Superior-Controller" target="_blank" rel="noopener">
       <div class="card-top">
@@ -252,6 +333,48 @@
         <span class="tag">JavaScript</span>
       </div>
     </a>
+
+  </div>
+
+  <p class="section-label">Apps</p>
+
+  <div class="grid">
+
+    <div class="app-card">
+      <div class="card-top">
+        <div class="card-icon">🎮</div>
+      </div>
+      <h2>Superior Controller</h2>
+      <p>Transform your Android phone into a wireless Bluetooth gamepad. Works out of the box with PC, Mac, and smart TV — no drivers, no setup.</p>
+      <div class="tags">
+        <span class="tag">Android</span>
+        <span class="tag">Bluetooth HID</span>
+      </div>
+      <div class="app-footer">
+        <span class="platform-badge">Android</span>
+        <a class="download-btn" href="https://github.com/JUANES545/Superior-Controller/releases/latest" target="_blank" rel="noopener">
+          ↓ Download APK
+        </a>
+      </div>
+    </div>
+
+    <div class="app-card">
+      <div class="card-top">
+        <div class="card-icon">⌨️</div>
+      </div>
+      <h2>DeckBridge</h2>
+      <p>A hardware-style macro deck that lives in your pocket. Pair over LAN, trigger macros, and mirror state in real time between phone and PC.</p>
+      <div class="tags">
+        <span class="tag">Android</span>
+        <span class="tag">LAN</span>
+      </div>
+      <div class="app-footer">
+        <span class="platform-badge">Android</span>
+        <a class="download-btn" href="https://github.com/JUANES545/DeckBridge/releases/latest" target="_blank" rel="noopener">
+          ↓ Download APK
+        </a>
+      </div>
+    </div>
 
   </div>
 
@@ -333,7 +456,6 @@
 
   // ── Render loop ───────────────────────────────────────────────────────
   const clock = new THREE.Clock();
-  const root  = scene.children[0]; // points group
 
   (function animate() {
     requestAnimationFrame(animate);
