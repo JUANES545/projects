@@ -1,0 +1,19 @@
+.gitignore
+  s_706bd12ea3a818::t_e21f8702eb5f2d 1-2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.5",
+  "base_commit_sha": "0c8733fa17e2d5af866680e6aa353599230b07a7",
+  "prompts": {},
+  "sessions": {
+    "s_706bd12ea3a818": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3c3ee19f-1b70-4f31-aca6-5ad0bc157097",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "JUANES5545 <juanes.reich@gmail.com>"
+    }
+  }
+}
