@@ -165,18 +165,33 @@
 
     /* ── GitHub stats ── */
     .gh-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
       opacity: 0;
       animation: riseIn 0.7s cubic-bezier(0.22,1,0.36,1) forwards 0.78s;
     }
 
-    .gh-stats img {
-      height: 80px;
-      border-radius: 10px;
-      opacity: 0.75;
-      transition: opacity 0.2s;
+    .gh-stat {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: border-color 0.2s, color 0.2s;
     }
 
-    .gh-stats img:hover { opacity: 1; }
+    .gh-stat:hover { border-color: var(--border-hov); color: var(--text); }
+
+    .gh-stat-value {
+      color: var(--accent);
+      font-weight: 600;
+    }
 
     /* ── Section headers ── */
     .section-head {
@@ -426,12 +441,7 @@
         <span class="dot"></span>3D Portfolio ↗
       </a>
     </div>
-    <div class="gh-stats">
-      <img
-        src="https://github-readme-stats.vercel.app/api?username=JUANES545&show_icons=true&hide_border=true&bg_color=00000000&title_color=4facfe&icon_color=4facfe&text_color=526070&hide_title=true&count_private=true"
-        alt="GitHub stats"
-      />
-    </div>
+    <div class="gh-stats" id="gh-stats"></div>
   </header>
 
   <div class="section-head" style="animation-delay:0.9s">
@@ -542,6 +552,24 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+  // ── GitHub stats ──────────────────────────────────────────────────────
+  fetch('https://api.github.com/users/JUANES545')
+    .then(r => r.json())
+    .then(d => {
+      const stats = document.getElementById('gh-stats');
+      const items = [
+        { label: 'Repos',     value: d.public_repos },
+        { label: 'Followers', value: d.followers },
+      ];
+      items.forEach(({ label, value }) => {
+        const el = document.createElement('div');
+        el.className = 'gh-stat';
+        el.innerHTML = `<span class="gh-stat-value">${value}</span>${label}`;
+        stats.appendChild(el);
+      });
+    })
+    .catch(() => {});
+
   // ── Mouse-tracking spotlight on cards ─────────────────────────────────
   document.querySelectorAll('.card, .app-card').forEach(el => {
     el.addEventListener('mousemove', e => {
